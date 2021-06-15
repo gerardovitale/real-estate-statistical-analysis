@@ -11,9 +11,8 @@ class MongoConnection:
     def __init__(self, database='real-estate-project', collection='idealista') -> None:
         load_dotenv('.env')
         self.client = pymongo.MongoClient(os.getenv("MONGO_PASS"))
-        self.database = database
         self.collection = collection
-        self.db = self.client.get_database('hiklub')
+        self.db = self.client.get_database(database)
         self.collection_list = self.db.list_collection_names()
 
     def set_collection(self, collection: str) -> None:

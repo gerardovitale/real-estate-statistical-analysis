@@ -15,6 +15,7 @@ from idealista.resources.searchParams.SearchParamsBuilder import \
     SearchParamsBuilder
 
 
+
 def get_env_variables() -> Tuple[str, str]:
     dotenv.load_dotenv('.env')
     apikey = os.getenv("APIKEY")
@@ -61,7 +62,7 @@ def get_response(token, search_params: SearchParams) -> dict:
     return result
 
 
-def get_response_info():
+def get_response_info() -> requests.Response:
     token = get_oauth_token()
     search_params = set_search_params()
     response = get_response(token, search_params)
@@ -70,7 +71,7 @@ def get_response_info():
 
 
 @time_it
-def save_responses_as_jsonl(pages_to_iter: int) -> None:
+def save_responses_as_jsonl(pages_to_iter: int) -> str:
     today = date.today().strftime("%d-%m-%Y")
     file_name = f'outputs/idealistaApiOutput{today}.jsonl'
     token = get_oauth_token()
@@ -80,3 +81,4 @@ def save_responses_as_jsonl(pages_to_iter: int) -> None:
         response = get_response(token, search_params)
         with jsonlines.open(file_name, mode='a') as writer:
             writer.write_all(response['elementList'])
+    return file_name
