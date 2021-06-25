@@ -1,4 +1,3 @@
-from os import read
 import jsonlines
 from idealista.idealista_api import get_response_info, save_responses_as_jsonl
 from resources.MongoConnection import MongoConnection
@@ -10,7 +9,7 @@ def get_new_data_from_idealista() -> str:
     return file_name
 
 
-def publish_data(file_path: str):
+def publish_data(file_path: str) -> None:
     with jsonlines.open(file_path, mode='r') as reader:
         MongoConnection().insert_many_docs(list(reader))
 
